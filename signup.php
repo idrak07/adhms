@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>MAINT CONTROL BAF MTR</title>
+  <title>ADHMS</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
   <!-- build:css({.tmp,app}) styles/app.min.css -->
@@ -36,8 +36,7 @@
               <div id="signupMessage"></div>
               <form role="form" id="signupForm" class="form-layout">
                 <div class="text-center m-b">
-                  <img width="80px" height="80px" src="images/Bangladesh_Air_Force_emblem.svg.png" alt="">
-                  <h2>REGISTRATION</h2>
+                  <h1>Registration</h1>
                 </div>
                 <div class="form-inputs">
                   <label class="text-uppercase">First Name</label>
@@ -52,6 +51,18 @@
                   <input type="email" autocomplete="off" class="form-control input-lg" placeholder="Email" name="username" id="username" required>
                   <label class="text-uppercase">Password</label>
                   <input type="password" autocomplete="off" name="password" id="password" class="form-control input-lg" placeholder="Password" required>
+                  <label class="text-uppercase">Role</label>
+                  <select class="form-control input-lg" name="role" id="role" onchange="populateRank()">
+                    <option value="OFFICER" selected>Officer</option>
+                    <option value="JCO">JCO</option>
+                    <option value="AIRMEN">Airmen</option>
+                    <option value="CIVILIAN">Civilian</option>
+                  </select>
+
+                  <label class="text-uppercase">Select Rank</label>
+                  <select id="rank" name="rank" class="form-control input-lg">
+                    <!-- Options will be populated dynamically using JavaScript -->
+                  </select>
                 </div>
                 <input type="hidden" name="signup" id="signup" value="signup">
                 <button style="background-color: #0A6BB0;border:none;outline:none" class="btn btn-primary btn-block btn-lg m-b" type="submit" name="submit" id="submit" onsubmit="submitForm(event)" onclick="submitForm(event)">Sign up</button>
@@ -74,6 +85,56 @@
   <script src="scripts/constants.js"></script>
   <script src="scripts/main.js"></script>
   <script>
+    function populateRank() {
+      var firstDropdown = document.getElementById("role");
+      var secondDropdown = document.getElementById("rank");
+      var selectedOption = firstDropdown.options[firstDropdown.selectedIndex].value;
+
+      // Clear previous options in the second dropdown
+      secondDropdown.innerHTML = "";
+
+      // Populate the second dropdown based on the selected option
+      if (selectedOption === "OFFICER") {
+        // Add options for option1
+        addOption(secondDropdown, "COAS", "COAS");
+        addOption(secondDropdown, "AVM ( Air Vice Marshal)", "AVM ( Air Vice Marshal)");
+        addOption(secondDropdown, "Air Commodore", "Air Commodore");
+        addOption(secondDropdown, "Gp Capt", "Gp Capt");
+        addOption(secondDropdown, "Wg Cdr", "Wg Cdr");
+        addOption(secondDropdown, "Sqn Ldr", "Sqn Ldr");
+        addOption(secondDropdown, "Flt Lt", "Flt Lt");
+        addOption(secondDropdown, "Flg Offr", "Flg Offr");
+        addOption(secondDropdown, "Offr Cadet", "Offr Cadet");
+      } else if (selectedOption === "JCO") {
+        // Add options for option2
+        addOption(secondDropdown, "MWO", "Suboption MWO-1");
+        addOption(secondDropdown, "SWO", "SWO");
+        addOption(secondDropdown, "WO", "WO ");
+      } else if (selectedOption === "AIRMEN") {
+        // Add options for option3
+        addOption(secondDropdown, "Sgt", "Sgt");
+        addOption(secondDropdown, "Cpl", "Cpl");
+        addOption(secondDropdown, "LAC", "LAC");
+        addOption(secondDropdown, "AC", "AC");
+      } else if (selectedOption === "CIVILIAN") {
+        // Add options for option3
+        addOption(secondDropdown, "CIV-II", "SCIV-II");
+        addOption(secondDropdown, "CIV-III", "CIV-III");
+        addOption(secondDropdown, "CIV-IV", "CIV-IV");
+      }
+    }
+
+    function addOption(selectElement, value, text) {
+      var option = document.createElement("option");
+      option.value = value;
+      option.text = text;
+      selectElement.add(option);
+    }
+
+    // Call the function initially to populate the second dropdown based on the default selection
+    populateRank();
+  </script>
+  <script>
     function submitForm(event) {
       // Prevent the default form submission behavior
       event.preventDefault();
@@ -85,7 +146,7 @@
         if (xhr.readyState == 4 && xhr.status == 200) {
           document.getElementById("signupMessage").innerHTML = xhr.responseText;
           setTimeout(function() {
-            window.location= "index.php";
+            window.location = "index.php";
           }, 3000);
           // Perform necessary actions on success
         } else {

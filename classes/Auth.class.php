@@ -36,14 +36,14 @@ class Auth
         }
     }
 
-    public function signup($username, $password, $fname, $lname, $bdno, $flt)
+    public function signup($username, $password, $fname, $lname, $bdno, $flt, $role, $rank)
     {
         $password = $this->stringValidation($password);
         $password = base64_encode($password);
         if ($this->emailExists($username)) {
             echo "<div id='alert' class='alert alert-danger' role='alert'>Email already exists</div>";
         } else {
-            $stm = $this->db->prepare("INSERT INTO `users`(`email`, `first_name`, `last_name`, `password`, `bd_no`, `flt`, `activated`, `type`) VALUES ('$username','$fname','$lname','$password','$bdno','$flt', 0,'user')");
+            $stm = $this->db->prepare("INSERT INTO `users`(`email`, `first_name`, `last_name`, `password`, `bd_no`, `flt`, `activated`, `type`, `role`, `rank`) VALUES ('$username','$fname','$lname','$password','$bdno','$flt', 0,'user', '$role', '$rank')");
             if ($stm->execute()) {
                 $id = $this->db->lastInsertId();
                 // $this->sendUserCreationMail($username, $email, $password);
